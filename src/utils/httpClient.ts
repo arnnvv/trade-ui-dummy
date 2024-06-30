@@ -1,14 +1,9 @@
 import axios from "axios";
 
-const getURL = (): string => {
-  const baseURL: string | undefined = process.env.BASE_URL;
-  if (!baseURL || baseURL.length === 0)
-    throw new Error("BASE_URL is not defined");
-  return baseURL;
-};
+const BASE_URL: string = "https://exchange-proxy.100xdevs.com/api/v1";
 
 export const getTickers = async (): Promise<Ticker[]> =>
-  (await axios.get(`${getURL()}/tickers`)).data;
+  (await axios.get(`${BASE_URL}/tickers`)).data;
 
 export const getTicker = async (market: string): Promise<Ticker> => {
   const tickers: Ticker[] = await getTickers();
@@ -22,10 +17,10 @@ export const getTicker = async (market: string): Promise<Ticker> => {
 };
 
 export const getDepth = async (market: string): Promise<Depth> =>
-  (await axios.get(`${getURL()}/depth?symbol=${market}`)).data;
+  (await axios.get(`${BASE_URL}/depth?symbol=${market}`)).data;
 
 export const getTrades = async (market: string): Promise<Trade[]> =>
-  (await axios.get(`${getURL()}/trades?symbol=${market}`)).data;
+  (await axios.get(`${BASE_URL}/trades?symbol=${market}`)).data;
 
 export const getKlines = async (
   market: string,
@@ -35,7 +30,7 @@ export const getKlines = async (
 ): Promise<Kline[]> =>
   (
     await axios.get(
-      `${getURL()}/klines?symbol=${market}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`,
+      `${BASE_URL}/klines?symbol=${market}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`,
     )
   ).data.sort((x: Kline, y: Kline): 1 | -1 =>
     Number(x.end) < Number(y.end) ? -1 : 1,

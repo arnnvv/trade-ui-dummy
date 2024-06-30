@@ -1,28 +1,14 @@
-"use client";
-
-import { getDepth, getTicker, getTrades } from "@/utils/httpClient";
-import { useEffect, useState } from "react";
+import { getDepth, getTicker } from "@/utils/httpClient";
 import AskTable from "./AskTable";
 import BidTable from "./BidTable";
 
-const Depth = ({ market }: { market: string }): JSX.Element => {
-  const [bids, setBids] = useState<[string, string][]>();
-  const [asks, setAsks] = useState<[string, string][]>();
-  const [price, setPrice] = useState<string>();
+const Depth = async ({ market }: { market: string }): Promise<JSX.Element> => {
+  const depth: Depth = await getDepth(market);
+  const bids: [string, string][] = depth.bids.reverse();
+  const asks: [string, string][] = depth.asks;
 
-  useEffect(() => {
-    (async () => {
-      const depth: Depth = await getDepth(market);
-      setBids(depth.bids.reverse());
-      setAsks(depth.asks);
-
-      const ticker: Ticker = await getTicker(market);
-      setPrice(ticker.lastPrice);
-
-      const trades: Trade[] = await getTrades(market);
-      setPrice(trades[0].price);
-    })();
-  }, [market]);
+  const ticker: Ticker = await getTicker(market);
+  const price: string = ticker.lastPrice;
 
   return (
     <div>

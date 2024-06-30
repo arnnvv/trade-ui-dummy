@@ -48,6 +48,7 @@ const SwapUI = ({ market }: { market: string }): JSX.Element => {
                     className="h-12 rounded-lg border-2 border-solid border-baseBorderLight bg-[var(--background)] pr-12 text-right text-2xl leading-9 text-[$text] placeholder-baseTextMedEmphasis ring-0 transition focus:border-accentBlue focus:ring-0"
                     type="text"
                     value="134.38"
+                    readOnly
                   />
                   <div className="flex flex-row absolute right-1 top-1 p-2">
                     <div className="relative">
@@ -68,6 +69,7 @@ const SwapUI = ({ market }: { market: string }): JSX.Element => {
                   className="h-12 rounded-lg border-2 border-solid border-baseBorderLight bg-[var(--background)] pr-12 text-right text-2xl leading-9 text-[$text] placeholder-baseTextMedEmphasis ring-0 transition focus:border-accentBlue focus:ring-0"
                   type="text"
                   value="123"
+                  readOnly
                 />
                 <div className="flex flex-row absolute right-1 top-1 p-2">
                   <div className="relative">
@@ -110,6 +112,7 @@ const SwapUI = ({ market }: { market: string }): JSX.Element => {
                     id="postOnly"
                     type="checkbox"
                     data-rac=""
+                    readOnly
                   />
                   <label className="ml-2 text-xs">Post Only</label>
                 </div>
@@ -119,6 +122,7 @@ const SwapUI = ({ market }: { market: string }): JSX.Element => {
                     id="ioc"
                     type="checkbox"
                     data-rac=""
+                    readOnly
                   />
                   <label className="ml-2 text-xs">IOC</label>
                 </div>
