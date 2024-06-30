@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReactNode } from "react";
 import Providers from "./Providers";
 import TopNav from "./_components/TopNav";
+import StateProvider from "./StateProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          <TopNav />
-          {children}
-        </Providers>
+        <StateProvider>
+          <Providers>
+            <TopNav />
+            {children}
+          </Providers>
+        </StateProvider>
       </body>
     </html>
   );
