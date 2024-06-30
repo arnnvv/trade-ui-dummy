@@ -1,15 +1,11 @@
-"use client";
 import { getTicker } from "@/utils/httpClient";
-import { useEffect, useState } from "react";
 
-const MarketBar = ({ market }: { market: string }): JSX.Element => {
-  const [ticker, setTicker] = useState<Ticker | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      setTicker(await getTicker(market));
-    })();
-  }, [market]);
+const MarketBar = async ({
+  market,
+}: {
+  market: string;
+}): Promise<JSX.Element> => {
+  const ticker = await getTicker(market);
 
   return (
     <div>
