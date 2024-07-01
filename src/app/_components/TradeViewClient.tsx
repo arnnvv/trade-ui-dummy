@@ -2,7 +2,7 @@
 import ChartManager from "@/utils/Chartmanager";
 import { useEffect, useRef } from "react";
 
-const TradeView = ({ klines }: { klines: Kline[] }): JSX.Element => {
+const TradeViewClient = ({ klines }: { klines: Kline[] }): JSX.Element => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartManagerRef = useRef<ChartManager>(null);
 
@@ -65,4 +65,4 @@ const TradeView = ({ klines }: { klines: Kline[] }): JSX.Element => {
   );
 };
 
-export default TradeView;
+export default TradeViewClient;

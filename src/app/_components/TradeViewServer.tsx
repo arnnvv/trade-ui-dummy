@@ -1,5 +1,5 @@
 import { getKlines } from "@/utils/httpClient";
-import TradeView from "./TradeView";
+import TradeViewClient from "./TradeViewClient";
 
 const fetchKlinesData = async (market: string): Promise<Kline[]> => {
   try {
@@ -16,7 +16,7 @@ const fetchKlinesData = async (market: string): Promise<Kline[]> => {
   }
 };
 
-const KlinesServer = async ({
+const TradeViewServer = async ({
   market,
 }: {
   market: string;
@@ -24,9 +24,9 @@ const KlinesServer = async ({
   const klines: Kline[] = await fetchKlinesData(market);
   return (
     <div>
-      <TradeView klines={klines} />
+      <TradeViewClient klines={klines} />
     </div>
   );
 };
 
-export default KlinesServer;
+export default TradeViewServer;
