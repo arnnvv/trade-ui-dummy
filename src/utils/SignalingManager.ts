@@ -8,17 +8,15 @@ class SignalingManager {
   private id: number;
   private initialized: boolean = false;
 
-  private constructor(private signalingServer?: string) {
-    this.ws = new WebSocket(signalingServer || EXCHANGE_URL);
+  private constructor() {
+    this.ws = new WebSocket(EXCHANGE_URL);
     this.bufferedMessages = [];
     this.id = 1;
     this.init();
   }
 
   public static getInstance(): SignalingManager {
-    if (!this.instance) {
-      this.instance = new SignalingManager();
-    }
+    if (!this.instance) this.instance = new SignalingManager();
     return this.instance;
   }
 

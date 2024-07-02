@@ -1,11 +1,69 @@
-import { getTicker } from "@/utils/httpClient";
+"use client";
 
-const MarketBar = async ({
-  market,
-}: {
-  market: string;
-}): Promise<JSX.Element> => {
-  const ticker = await getTicker(market);
+import { tickerAtom } from "@/store/atoms";
+import { getTicker } from "@/utils/httpClient";
+import SignalingManager from "@/utils/SignalingManager";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+
+const MarketBar = ({ market }: { market: string }): JSX.Element => {
+  const [ticker, setTicker] = useRecoilState(tickerAtom);
+  useEffect(() => {
+    (async () => {
+      const ticket = await getTicker(market);
+      setTicker(ticket);
+      SignalingManager.getInstance().registerCallback(
+        "ticker",
+        (data: Partial<Ticker>) =>
+          setTicker(
+            (
+              prevTicker: Ticker | null,
+            ): {
+              firstPrice: string;
+              high: string;
+              lastPrice: string;
+              low: string;
+              priceChange: string;
+              priceChangePercent: string;
+              quoteVolume: string;
+              symbol: string;
+              trades: string;
+              volume: string;
+            } => ({
+              firstPrice: data?.firstPrice ?? prevTicker?.firstPrice ?? "",
+              high: data?.high ?? prevTicker?.high ?? "",
+              lastPrice: data?.lastPrice ?? prevTicker?.lastPrice ?? "",
+              low: data?.low ?? prevTicker?.low ?? "",
+              priceChange: data?.priceChange ?? prevTicker?.priceChange ?? "",
+              priceChangePercent:
+                data?.priceChangePercent ??
+                prevTicker?.priceChangePercent ??
+                "",
+              quoteVolume: data?.quoteVolume ?? prevTicker?.quoteVolume ?? "",
+              symbol: data?.symbol ?? prevTicker?.symbol ?? "",
+              trades: data?.trades ?? prevTicker?.trades ?? "",
+              volume: data?.volume ?? prevTicker?.volume ?? "",
+            }),
+          ),
+        `TICKER-${market}`,
+      );
+      SignalingManager.getInstance().sendMessage({
+        method: "SUBSCRIBE",
+        params: [`ticker.${market}`],
+      });
+
+      return () => {
+        SignalingManager.getInstance().deRegisterCallback(
+          "ticker",
+          `TICKER-${market}`,
+        );
+        SignalingManager.getInstance().sendMessage({
+          method: "UNSUBSCRIBE",
+          params: [`ticker.${market}`],
+        });
+      };
+    })();
+  }, [market, setTicker]);
 
   return (
     <div>

@@ -3,7 +3,7 @@
 import { activeAtom } from "@/store/atoms";
 import { useRecoilState } from "recoil";
 
-const SellButton = ({}: {}): JSX.Element => {
+const SellButton = (): JSX.Element => {
   const [active, setActive] = useRecoilState(activeAtom);
 
   return (
