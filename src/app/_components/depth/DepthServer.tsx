@@ -2,7 +2,11 @@ import { getDepth, getTicker } from "@/utils/httpClient";
 import AskTable from "./AskTable";
 import BidTable from "./BidTable";
 
-const Depth = async ({ market }: { market: string }): Promise<JSX.Element> => {
+const DepthServer = async ({
+  market,
+}: {
+  market: string;
+}): Promise<JSX.Element> => {
   const depth: Depth = await getDepth(market);
   const bids: [string, string][] = depth.bids.reverse();
   const asks: [string, string][] = depth.asks;
@@ -24,4 +28,4 @@ const Depth = async ({ market }: { market: string }): Promise<JSX.Element> => {
   );
 };
 
-export default Depth;
+export default DepthServer;

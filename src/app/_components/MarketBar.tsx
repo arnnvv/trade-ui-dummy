@@ -1,35 +1,21 @@
 "use client";
 
-import { tickerAtom } from "@/store/atoms";
 import { getTicker } from "@/utils/httpClient";
 import SignalingManager from "@/utils/SignalingManager";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 
 const MarketBar = ({ market }: { market: string }): JSX.Element => {
-  const [ticker, setTicker] = useRecoilState(tickerAtom);
+  const [ticker, setTicker] = useState<Ticker | null>(null);
+
   useEffect(() => {
-    (async () => {
+    (async (): Promise<() => void> => {
       const ticket = await getTicker(market);
       setTicker(ticket);
       SignalingManager.getInstance().registerCallback(
         "ticker",
-        (data: Partial<Ticker>) =>
+        (data: Partial<Ticker>): void =>
           setTicker(
-            (
-              prevTicker: Ticker | null,
-            ): {
-              firstPrice: string;
-              high: string;
-              lastPrice: string;
-              low: string;
-              priceChange: string;
-              priceChangePercent: string;
-              quoteVolume: string;
-              symbol: string;
-              trades: string;
-              volume: string;
-            } => ({
+            (prevTicker: Ticker | null): Ticker => ({
               firstPrice: data?.firstPrice ?? prevTicker?.firstPrice ?? "",
               high: data?.high ?? prevTicker?.high ?? "",
               lastPrice: data?.lastPrice ?? prevTicker?.lastPrice ?? "",
@@ -107,16 +93,14 @@ const MarketBar = ({ market }: { market: string }): JSX.Element => {
               >
                 ${ticker?.lastPrice}
               </p>
-              <p className="font-medium text-sm text-sm tabular-nums">
+              <p className="font-medium text-sm tabular-nums">
                 ${ticker?.lastPrice}
               </p>
             </div>
             <div className="flex flex-col">
-              <p className={`font-medium text-xs text-slate-400 text-sm`}>
-                24H Change
-              </p>
+              <p className={`font-medium text-xs text-slate-400`}>24H Change</p>
               <p
-                className={` text-sm font-medium tabular-nums leading-5 text-sm text-greenText ${Number(ticker?.priceChange) > 0 ? "text-green-500" : "text-red-500"}`}
+                className={`font-medium tabular-nums leading-5 text-sm text-greenText ${Number(ticker?.priceChange) > 0 ? "text-green-500" : "text-red-500"}`}
               >
                 {Number(ticker?.priceChange) > 0 ? "+" : ""}{" "}
                 {ticker?.priceChange}{" "}
@@ -124,18 +108,14 @@ const MarketBar = ({ market }: { market: string }): JSX.Element => {
               </p>
             </div>
             <div className="flex flex-col">
-              <p className="font-medium text-xs text-slate-400 text-sm">
-                24H High
-              </p>
-              <p className="text-sm font-medium tabular-nums leading-5 text-sm ">
+              <p className="font-medium text-xs text-slate-400">24H High</p>
+              <p className="font-medium tabular-nums leading-5 text-sm ">
                 {ticker?.high}
               </p>
             </div>
             <div className="flex flex-col">
-              <p className="font-medium text-xs text-slate-400 text-sm">
-                24H Low
-              </p>
-              <p className="text-sm font-medium tabular-nums leading-5 text-sm ">
+              <p className="font-medium text-xs text-slate-400">24H Low</p>
+              <p className="font-medium tabular-nums leading-5 text-sm ">
                 {ticker?.low}
               </p>
             </div>
@@ -145,10 +125,8 @@ const MarketBar = ({ market }: { market: string }): JSX.Element => {
               data-rac=""
             >
               <div className="flex flex-col">
-                <p className="font-medium text-xs text-slate-400 text-sm">
-                  24H Volume
-                </p>
-                <p className="mt-1 text-sm font-medium tabular-nums leading-5 text-sm ">
+                <p className="font-medium text-xs text-slate-400">24H Volume</p>
+                <p className="mt-1 text-sm font-medium tabular-nums leading-5">
                   {ticker?.volume}
                 </p>
               </div>

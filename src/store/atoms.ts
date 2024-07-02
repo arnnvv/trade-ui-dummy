@@ -9,8 +9,3 @@ export const typeAtom = atom<"limit" | "market">({
   key: "type",
   default: "limit",
 });
-
-export const tickerAtom = atom<Ticker | null>({
-  key: "ticker",
-  default: null,
-});

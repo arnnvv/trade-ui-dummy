@@ -1,5 +1,5 @@
 "use client";
-import Depth from "@/app/_components/depth/Depth";
+import DepthServer from "@/app/_components/depth/DepthServer";
 import MarketBar from "@/app/_components/MarketBar";
 import SwapUI from "@/app/_components/SwapUI";
 import TradeViewServer from "@/app/_components/TradeViewServer";
@@ -18,7 +18,7 @@ const Trade = (): JSX.Element => {
           </div>
           <div className="w-[1px] flex-col border-slate-800 border-l"></div>
           <div className="flex flex-col w-[250px] overflow-hidden">
-            <Depth market={market as string} />
+            <DepthServer market={market as string} />
           </div>
         </div>
       </div>
