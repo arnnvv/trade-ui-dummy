@@ -95,7 +95,7 @@ const SwapUI = ({ market }: { market: string }): JSX.Element => {
             </div>
             <button
               type="button"
-              className="font-semibold  focus:ring-blue-200 focus:none focus:outline-none text-center h-12 rounded-xl text-base px-4 py-2 my-4 bg-greenPrimaryButtonBackground text-greenPrimaryButtonText active:scale-98"
+              className={`font-semibold  focus:ring-blue-200 focus:none focus:outline-none text-center h-12 rounded-xl text-base px-4 py-2 my-4 ${active === "buy" ? "bg-greenPrimaryButton hover:bg-greenPrimaryButtonHover" : "bg-baseBackgroundL3 hover:bg-baseBackgroundL4"} text-greenPrimaryButtonText active:scale-98`}
               data-rac=""
             >
               {active}

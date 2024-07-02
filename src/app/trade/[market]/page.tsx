@@ -1,6 +1,6 @@
 "use client";
 import DepthServer from "@/app/_components/depth/DepthServer";
-import MarketBar from "@/app/_components/MarketBar";
+import MarketBarServer from "@/app/_components/MarketBarServer";
 import SwapUI from "@/app/_components/SwapUI";
 import TradeViewServer from "@/app/_components/TradeViewServer";
 import { useParams } from "next/navigation";
@@ -11,7 +11,7 @@ const Trade = (): JSX.Element => {
   return (
     <div className="flex flex-row flex-1">
       <div className="flex flex-col flex-1">
-        <MarketBar market={market as string} />
+        <MarketBarServer market={market as string} />
         <div className="flex flex-row h-[620px] border-y border-slate-800">
           <div className="flex flex-col flex-1">
             <TradeViewServer market={market as string} />

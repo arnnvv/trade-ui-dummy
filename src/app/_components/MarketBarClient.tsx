@@ -1,16 +1,19 @@
 "use client";
 
-import { getTicker } from "@/utils/httpClient";
 import SignalingManager from "@/utils/SignalingManager";
 import { useEffect, useState } from "react";
 
-const MarketBar = ({ market }: { market: string }): JSX.Element => {
-  const [ticker, setTicker] = useState<Ticker | null>(null);
+const MarketBarClient = ({
+  market,
+  initialTicker,
+}: {
+  market: string;
+  initialTicker: Ticker;
+}): JSX.Element => {
+  const [ticker, setTicker] = useState<Ticker>(initialTicker);
 
   useEffect(() => {
     (async (): Promise<() => void> => {
-      const ticket = await getTicker(market);
-      setTicker(ticket);
       SignalingManager.getInstance().registerCallback(
         "ticker",
         (data: Partial<Ticker>): void =>
@@ -138,4 +141,4 @@ const MarketBar = ({ market }: { market: string }): JSX.Element => {
   );
 };
 
-export default MarketBar;
+export default MarketBarClient;
