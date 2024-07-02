@@ -1,6 +1,5 @@
-import { getDepth, getTicker } from "@/utils/httpClient";
-import AskTable from "./AskTable";
-import BidTable from "./BidTable";
+import { getDepth, getTicker, getTrades } from "@/utils/httpClient";
+import DepthClient from "./DepthClient";
 
 const DepthServer = async ({
   market,
@@ -12,19 +11,16 @@ const DepthServer = async ({
   const asks: [string, string][] = depth.asks;
 
   const ticker: Ticker = await getTicker(market);
-  const price: string = ticker.lastPrice;
+  const trades: Trade[] = await getTrades(market);
+  const price: string = ticker?.lastPrice || trades[0]?.price;
 
   return (
-    <div>
-      <div className="flex justify-between text-xs">
-        <div className="text-white">Price</div>
-        <div className="text-slate-500">Size</div>
-        <div className="text-slate-500">Total</div>
-      </div>
-      {asks && <AskTable asks={asks} />}
-      {price && <div>{price}</div>}
-      {bids && <BidTable bids={bids} />}
-    </div>
+    <DepthClient
+      market={market}
+      initialBids={bids}
+      initialAsks={asks}
+      initialPrice={price}
+    />
   );
 };
 
