@@ -1,4 +1,4 @@
-"use clfent";
+"use client";
 import ChartManager from "@/utils/Chartmanager";
 import { useEffect, useRef } from "react";
 
