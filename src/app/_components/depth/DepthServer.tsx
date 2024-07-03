@@ -6,20 +6,21 @@ const DepthServer = async ({
 }: {
   market: string;
 }): Promise<JSX.Element> => {
-  const depth: Depth = await getDepth(market);
-  const bids: [string, string][] = depth.bids.reverse();
-  const asks: [string, string][] = depth.asks;
+  const initialDepth: Depth = await getDepth(market);
+  const initialBids: [string, string][] = initialDepth.bids.reverse();
+  const initialAsks: [string, string][] = initialDepth.asks;
 
-  const ticker: Ticker = await getTicker(market);
-  const trades: Trade[] = await getTrades(market);
-  const price: string = ticker?.lastPrice || trades[0]?.price;
+  const initialTicker: Ticker = await getTicker(market);
+  const initialTrades: Trade[] = await getTrades(market);
+  const initialPrice: string =
+    initialTicker?.lastPrice || initialTrades[0]?.price;
 
   return (
     <DepthClient
       market={market}
-      initialBids={bids}
-      initialAsks={asks}
-      initialPrice={price}
+      initialBids={initialBids}
+      initialAsks={initialAsks}
+      initialPrice={initialPrice}
     />
   );
 };

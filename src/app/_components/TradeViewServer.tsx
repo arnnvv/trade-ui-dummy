@@ -3,7 +3,7 @@ import TradeViewClient from "./TradeViewClient";
 
 const fetchKlinesData = async (market: string): Promise<Kline[]> => {
   try {
-    const klines = await getKlines(
+    const klines: Kline[] = await getKlines(
       market,
       "1h",
       Math.floor((new Date().getTime() - 1000 * 60 * 60 * 24 * 7) / 1000),
