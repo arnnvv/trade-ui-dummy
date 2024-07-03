@@ -45,6 +45,7 @@ const DepthClient: FC<DepthClientProps> = ({
       });
     };
 
+    //@ts-ignore
     signalingManager.registerCallback("depth", handleDepthUpdate, callbackId);
     signalingManager.sendMessage({
       method: "SUBSCRIBE",

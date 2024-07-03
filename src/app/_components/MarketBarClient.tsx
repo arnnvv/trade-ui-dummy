@@ -16,6 +16,7 @@ const MarketBarClient = ({
     (async (): Promise<() => void> => {
       SignalingManager.getInstance().registerCallback(
         "ticker",
+        //@ts-ignore
         (data: Partial<Ticker>): void =>
           setTicker(
             (prevTicker: Ticker | null): Ticker => ({
