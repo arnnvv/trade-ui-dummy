@@ -1,9 +1,11 @@
 export const EXCHANGE_URL: string = "wss://ws.backpack.exchange/";
 
-type Message = any;
+interface Message {
+  method: string;
+  params: string[];
+}
 
-interface BufferedMessage {
-  message: Message;
+interface BufferedMessage extends Message {
   id: number;
 }
 
