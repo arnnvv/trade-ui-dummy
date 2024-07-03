@@ -4,13 +4,6 @@ import { FC, useEffect, useState } from "react";
 import AskTable from "./AskTable";
 import BidTable from "./BidTable";
 
-interface DepthClientProps {
-  market: string;
-  initialBids: [string, string][];
-  initialAsks: [string, string][];
-  initialPrice: string;
-}
-
 const DepthClient: FC<DepthClientProps> = ({
   market,
   initialBids,
@@ -24,18 +17,16 @@ const DepthClient: FC<DepthClientProps> = ({
     const signalingManager = SignalingManager.getInstance();
     const callbackId = `DEPTH-${market}`;
 
-    const handleDepthUpdate = (data: any) => {
+    const handleDepthUpdate = (data: Data) => {
       setBids((originalBids: [string, string][]): [string, string][] => {
         const bidsAfterUpdate = [...(originalBids || [])];
 
-        for (let i = 0; i < bidsAfterUpdate.length; i++) {
-          for (let j = 0; j < data.bids.length; j++) {
+        for (let i = 0; i < bidsAfterUpdate.length; i++)
+          for (let j = 0; j < data.bids.length; j++)
             if (bidsAfterUpdate[i][0] === data.bids[j][0]) {
               bidsAfterUpdate[i][1] = data.bids[j][1];
               break;
             }
-          }
-        }
         return bidsAfterUpdate;
       });
 

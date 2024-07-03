@@ -37,3 +37,15 @@ interface Ticker {
   trades: string;
   volume: string;
 }
+
+interface DepthClientProps {
+  market: string;
+  initialBids: [string, string][];
+  initialAsks: [string, string][];
+  initialPrice: string;
+}
+
+interface Data {
+  bids: [string, string][];
+  asks: [string, string][];
+}

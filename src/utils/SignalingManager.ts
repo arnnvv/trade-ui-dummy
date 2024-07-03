@@ -1,10 +1,26 @@
 export const EXCHANGE_URL: string = "wss://ws.backpack.exchange/";
 
+type Message = any;
+
+interface BufferedMessage {
+  message: Message;
+  id: number;
+}
+
+type BufferedMessages = BufferedMessage[];
+
+type CallbackFunc = (data: Data | Partial<Ticker>) => void;
+
+interface Callback {
+  callback: CallbackFunc;
+  id: string;
+}
+
 class SignalingManager {
   private ws: WebSocket;
   private static instance: SignalingManager;
-  private bufferedMessages: any[] = [];
-  private callbacks: { [type: string]: any[] } = {};
+  private bufferedMessages: BufferedMessages = [];
+  private callbacks: { [type: string]: Callback[] } = {};
   private id: number;
   private initialized: boolean = false;
 
@@ -23,7 +39,7 @@ class SignalingManager {
   init() {
     this.ws.onopen = () => {
       this.initialized = true;
-      this.bufferedMessages.forEach((message) => {
+      this.bufferedMessages.forEach((message: BufferedMessage) => {
         this.ws.send(JSON.stringify(message));
       });
       this.bufferedMessages = [];
@@ -32,7 +48,7 @@ class SignalingManager {
       const message = JSON.parse(event.data);
       const type = message.data.e;
       if (this.callbacks[type]) {
-        this.callbacks[type].forEach(({ callback }) => {
+        this.callbacks[type].forEach(({ callback }: Callback) => {
           if (type === "ticker") {
             const newTicker: Partial<Ticker> = {
               lastPrice: message.data.c,
@@ -46,8 +62,8 @@ class SignalingManager {
             callback(newTicker);
           }
           if (type === "depth") {
-            const updatedBids = message.data.b;
-            const updatedAsks = message.data.a;
+            const updatedBids: [string, string][] = message.data.b;
+            const updatedAsks: [string, string][] = message.data.a;
             callback({ bids: updatedBids, asks: updatedAsks });
           }
         });
@@ -55,8 +71,8 @@ class SignalingManager {
     };
   }
 
-  sendMessage(message: any) {
-    const messageToSend = {
+  sendMessage(message: Message) {
+    const messageToSend: BufferedMessage = {
       ...message,
       id: this.id++,
     };
@@ -67,7 +83,7 @@ class SignalingManager {
     this.ws.send(JSON.stringify(messageToSend));
   }
 
-  async registerCallback(type: string, callback: any, id: string) {
+  async registerCallback(type: string, callback: CallbackFunc, id: string) {
     this.callbacks[type] = this.callbacks[type] || [];
     this.callbacks[type].push({ callback, id });
   }
@@ -75,7 +91,7 @@ class SignalingManager {
   async deRegisterCallback(type: string, id: string) {
     if (this.callbacks[type]) {
       const index = this.callbacks[type].findIndex(
-        (callback): boolean => callback.id === id,
+        (callback: Callback): boolean => callback.id === id,
       );
       if (index !== -1) {
         this.callbacks[type].splice(index, 1);
